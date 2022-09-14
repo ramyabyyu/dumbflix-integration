@@ -1,8 +1,13 @@
 package models
 
+import "time"
+
 type User struct {
-	ID       int    `json:"id" gorm:"primary_key:auto_increment"`
-	Email    string `json:"email" gorm:"type: varchar(255)"`
-	Password string `json:"-" gorm:"type: varchar(255)"`
-	IsAdmin  bool   `json:"isAdmin"`
+	ID        int    `json:"id" gorm:"primary_key:auto_increment"`
+	Email     string `json:"email" gorm:"type: varchar(255)"`
+	Password  string `json:"-" gorm:"type: varchar(255)"`
+	IsAdmin   bool   `json:"isAdmin"`
+	Profile Profile `json:"profile"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }

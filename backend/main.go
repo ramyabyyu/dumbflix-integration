@@ -40,5 +40,5 @@ func main() {
 	var port = "8080"
 
 	fmt.Println("Starting API server localhost:"+port)
-	http.ListenAndServe("localhost"+port, handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(r))
+	http.ListenAndServe("localhost:8080", handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(r))
 }
