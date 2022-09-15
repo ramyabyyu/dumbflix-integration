@@ -63,6 +63,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 			Gender: request.Gender,
 			Address: request.Address,
 			Phone: request.Phone,
+			Photo: "-",
 		},
 	}
 
@@ -84,18 +85,18 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
-	// // Generate Token
-	// claims := jwt.MapClaims{}
-	// claims["id"] = user.ID
-	// claims["isAdmin"] = user.IsAdmin
-	// claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
+	// Generate Token
+	claims := jwt.MapClaims{}
+	claims["id"] = user.ID
+	claims["isAdmin"] = user.IsAdmin
+	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
 
-	// token, err := jwtToken.GenerateToken(&claims)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	fmt.Println("Unauthorized")
-	// 	return
-	// }
+	token, err := jwtToken.GenerateToken(&claims)
+	if err != nil {
+		log.Println(err)
+		fmt.Println("Unauthorized")
+		return
+	}
 
 	registerResponse := authdto.RegisterResponse{
 		ID: data.ID,
@@ -105,6 +106,8 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Address: data.Profile.Address,
 		Gender: data.Profile.Gender,
 		Phone: data.Profile.Phone,
+		Photo: data.Profile.Photo,
+		Token: token,
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -174,6 +177,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginResponse := authdto.LoginResponse{
+		ID: user.ID,
 		Email: request.Email,
 		IsAdmin: user.IsAdmin,
 		Token: token,

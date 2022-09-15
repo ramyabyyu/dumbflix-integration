@@ -6,6 +6,7 @@ type Profile struct {
 	Gender   string              `json:"gender" gorm:"type: varchar(255)"`
 	Address  string              `json:"address"`
 	Phone    string              `json:"phone" gorm:"type: varchar(255)"`
+	Photo    string              `json:"photo" gorm:"type: varchar(255)"`
 	UserID   int                 `json:"user_id"`
 	User     UserProfileResponse `json:"user"`
 }
