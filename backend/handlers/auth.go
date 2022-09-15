@@ -64,8 +64,6 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 			Address: request.Address,
 			Phone: request.Phone,
 		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
 	}
 
 	// Check if email exist
@@ -86,21 +84,20 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
-	// Generate Token
-	claims := jwt.MapClaims{}
-	claims["id"] = user.ID
-	claims["isAdmin"] = user.IsAdmin
-	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
+	// // Generate Token
+	// claims := jwt.MapClaims{}
+	// claims["id"] = user.ID
+	// claims["isAdmin"] = user.IsAdmin
+	// claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
 
-	token, err := jwtToken.GenerateToken(&claims)
-	if err != nil {
-		log.Println(err)
-		fmt.Println("Unauthorized")
-		return
-	}
+	// token, err := jwtToken.GenerateToken(&claims)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	fmt.Println("Unauthorized")
+	// 	return
+	// }
 
-	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: authdto.RegisterResponse{
+	registerResponse := authdto.RegisterResponse{
 		ID: data.ID,
 		FullName: data.Profile.FullName,
 		Email: data.Email,
@@ -108,8 +105,10 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Address: data.Profile.Address,
 		Gender: data.Profile.Gender,
 		Phone: data.Profile.Phone,
-		Token: token,
-	}}
+	}
+
+	w.WriteHeader(http.StatusOK)
+	response := dto.SuccessResult{Code: http.StatusOK, Data: registerResponse}
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -129,23 +128,37 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Password: request.Password,
 	}
 
+	fmt.Println("Email")
+	fmt.Println(request.Email)
+
 	// Check Email
 	user, err := h.AuthRepository.Login(user.Email)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: "Your email is incorrect"}
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
+	fmt.Println("user")
+	fmt.Println(user)
+
+	// Get Old User Password
+	// oldPassword, _ := h.AuthRepository.GetUserPassword(user.Email)
+	// fmt.Println("request.Password:", request.Password)
+	// fmt.Println("oldpassword:",oldPassword)
 	// Check Password
+
 	isValid := bcrypt.CheckPasswordHash(request.Password, user.Password)
 	if !isValid {
 		w.WriteHeader(http.StatusBadRequest)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: "Your password is incorrect"}
+		
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: "Incorrect password or email!"}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	
 
 	// generate token
 	claims := jwt.MapClaims{}
@@ -166,7 +179,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Token: token,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: loginResponse}
 	json.NewEncoder(w).Encode(response)
 }
