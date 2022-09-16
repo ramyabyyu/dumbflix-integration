@@ -1,0 +1,9 @@
+.see__more-link {
+  padding: 11rem 0;
+}
+
+#tv-series,
+#fullMovieList,
+#fullTvSeriesList {
+  margin-top: 11rem !important;
+}

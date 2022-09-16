@@ -108,6 +108,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Phone: data.Profile.Phone,
 		Photo: data.Profile.Photo,
 		Token: token,
+		Message: "Register Success",
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -181,6 +182,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Email: request.Email,
 		IsAdmin: user.IsAdmin,
 		Token: token,
+		Message: "Login Success",
 	}
 
 	w.WriteHeader(http.StatusOK)

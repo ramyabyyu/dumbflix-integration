@@ -1,0 +1,38 @@
+.pw__container {
+  position: relative;
+}
+
+.pw__icon-container {
+  position: absolute;
+  bottom: 9px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  border-radius: 0.5rem;
+}
+
+.pw__icon {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.pw__icon-container:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.bg-group {
+  background-color: grey !important;
+  color: #fff !important;
+}
+
+.bg-group::placeholder {
+  color: white !important;
+}
+
+.switchBtn {
+  cursor: pointer;
+}

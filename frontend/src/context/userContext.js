@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import * as AuthTypes from "../types/auth";
 
 export const UserContext = createContext();
 
@@ -11,14 +12,19 @@ const reducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "AUTH_SUCCESS":
+    case AuthTypes.AUTH_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         isLogin: true,
         user: payload,
       };
-    case "AUTH_ERROR":
-    case "LOGOUT":
+    case AuthTypes.AUTH_ERROR:
+      localStorage.removeItem("token");
+      return {
+        isLogin: false,
+        user: {},
+      };
+    case AuthTypes.LOGOUT:
       localStorage.removeItem("token");
       return {
         isLogin: false,

@@ -5,6 +5,7 @@ type LoginResponse struct {
 	Email   string `json:"email"`
 	Token   string `json:"token"`
 	IsAdmin bool   `json:"is_admin"`
+	Message string `json:"message"`
 }
 
 type RegisterResponse struct {
@@ -17,4 +18,5 @@ type RegisterResponse struct {
 	Gender   string `json:"gender"`
 	Phone    string `json:"phone"`
 	Photo    string `json:"-"`
+	Message  string `json:"message"`
 }

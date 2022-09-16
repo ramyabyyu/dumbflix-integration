@@ -1,0 +1,28 @@
+.jumbotron__img {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+}
+
+.watch__now-btn {
+  top: 350px;
+  left: 265px;
+}
+
+.jumbotron__text {
+  top: 173px;
+  left: 59px;
+}
+
+.cool__box-shadow {
+  box-shadow: -5px 9px 53px 108px rgba(0, 0, 0, 0.84);
+  width: 100%;
+  position: absolute;
+  z-index: 99;
+  bottom: 0;
+  right: 0;
+}
+
+.jumbotron__box-shadow {
+  box-shadow: -5px -7px 53px 108px rgba(0, 0, 0, 0.84);
+}

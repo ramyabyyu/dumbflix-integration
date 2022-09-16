@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	authdto "dumbflix/dto/auth"
 	dto "dumbflix/dto/result"
-	"dumbflix/models"
 	"dumbflix/repositories"
 	"encoding/json"
 	"net/http"
@@ -32,15 +30,4 @@ func (h *handler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: users}
 	json.NewEncoder(w).Encode(response)
-}
-
-func convertResponse(u models.User) authdto.RegisterResponse {
-	return authdto.RegisterResponse{
-		ID: u.ID,
-		FullName: u.Profile.FullName,
-		Email: u.Email,
-		IsAdmin: u.IsAdmin,
-		Address: u.Profile.Address,
-		Gender: u.Profile.Address,
-	}
 }
