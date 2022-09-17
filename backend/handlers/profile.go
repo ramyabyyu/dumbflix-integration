@@ -6,10 +6,10 @@ import (
 	"dumbflix/models"
 	"dumbflix/repositories"
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type handlerProfile struct {
@@ -23,14 +23,22 @@ func HandlerProfile(ProfileRepository repositories.ProfileRepository) *handlerPr
 func (h *handlerProfile) GetProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	// id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	// Get User ID
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	userId := int(userInfo["id"].(float64))
+
+	fmt.Println(userInfo)
+	fmt.Println(userId)
 
 	var profile models.Profile
-	profile, err := h.ProfileRepository.GetProfile(id)
+	profile, err := h.ProfileRepository.GetProfile(userId)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	profileResponse := profiledto.ProfileResponse{
@@ -40,7 +48,7 @@ func (h *handlerProfile) GetProfile(w http.ResponseWriter, r *http.Request) {
 		Photo: profile.Photo,
 		Phone: profile.Phone,
 		Address: profile.Address,
-		UserID: profile.User.ID,
+		UserID: userId,
 	}
 
 	w.WriteHeader(http.StatusOK)

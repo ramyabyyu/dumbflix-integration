@@ -87,9 +87,13 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 
 	// Generate Token
 	claims := jwt.MapClaims{}
-	claims["id"] = user.ID
-	claims["isAdmin"] = user.IsAdmin
+	claims["id"] = data.ID
+	claims["isAdmin"] = data.IsAdmin
 	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
+
+	fmt.Println(claims)
+
+	// fmt.Println(data.ID)
 
 	token, err := jwtToken.GenerateToken(&claims)
 	if err != nil {

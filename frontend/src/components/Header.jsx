@@ -1,6 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { Navbar, Container, Nav, Button, Dropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  Button,
+  Dropdown,
+  Modal,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import AuthModal from "./AuthModal";
 import dumbflixLogo from "../assets/images/dumbflix_logo.png";
@@ -18,6 +25,11 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  // Dropdown Logout
+  const openLogoutDropdown = () => {
+    document.getElementById("logout-confirm-dropdown").click();
+  };
 
   const [isLogin, setIsLogin] = useState(false);
 
@@ -79,7 +91,10 @@ const Header = () => {
                   <Dropdown.Item href="/movies">
                     <FaFilm className="text-danger me-2" /> <span>Film</span>
                   </Dropdown.Item>
-                  <Dropdown.Divider className="bg-secondary" />
+                  <Dropdown.Divider
+                    className="bg-secondary"
+                    onClick={openLogoutDropdown}
+                  />
                   <Dropdown.Item href="#" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />
                     <span>Logout</span>

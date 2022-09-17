@@ -13,5 +13,5 @@ func ProfileRoutes(r *mux.Router) {
 	profileRepository := repositories.RepositoryProfile(mysql.DB)
 	h := handlers.HandlerProfile(profileRepository)
 
-	r.HandleFunc("/profile/{id}", middlewares.Auth(h.GetProfile)).Methods("GET")
+	r.HandleFunc("/profile", middlewares.Auth(h.GetProfile)).Methods("GET")
 }

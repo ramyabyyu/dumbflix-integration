@@ -17,7 +17,7 @@ func RepositoryProfile(db *gorm.DB) *repository {
 func (r *repository) GetProfile(ID int) (models.Profile, error) {
 	var profile models.Profile
 	
-	err := r.db.Preload("User").First(&profile, "user_id=?", ID).Error
+	err := r.db.Debug().Preload("User").First(&profile, "user_id=?", ID).Error
 
 	return profile, err
 }
