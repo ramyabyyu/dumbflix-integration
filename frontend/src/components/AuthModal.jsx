@@ -49,13 +49,19 @@ const AuthModal = ({ show, handleClose }) => {
 
       let response;
 
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
       if (isRegister) {
-        response = await API.post("/register", userData);
+        response = await API.post("/register", userData, config);
       } else {
-        response = await API.post("/login", userData);
+        response = await API.post("/login", userData, config);
       }
 
-      if (response.status === 200) {
+      if (response?.status == 200) {
         dispatch({
           type: AuthTypes.AUTH_SUCCESS,
           payload: response.data.data,
@@ -63,17 +69,12 @@ const AuthModal = ({ show, handleClose }) => {
 
         handleClose();
         navigate("profile");
-      } else {
-        dispatch({
-          type: AuthTypes.AUTH_ERROR,
-        });
-        setErrResMsg(response.data.message);
       }
     } catch (error) {
       dispatch({
         type: AuthTypes.AUTH_ERROR,
       });
-      setErrResMsg("Some error occured!");
+      setErrResMsg(error.response.data.message);
     }
   });
 
@@ -82,7 +83,7 @@ const AuthModal = ({ show, handleClose }) => {
       const formAlert = document.getElementById("form-alert");
       formAlert.classList.remove("d-none");
     }
-  }, [errResMsg]);
+  }, [errResMsg, isRegister]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -92,16 +93,10 @@ const AuthModal = ({ show, handleClose }) => {
       <Modal.Body className="bg-dark text-white border-0">
         <div
           id="form-alert"
-          class="alert alert-danger alert-dismissible fade show d-none"
+          class="alert alert-danger fade show d-none"
           role="alert"
         >
           <strong>{errResMsg}</strong>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
         </div>
         <Form className="px-1" onSubmit={(e) => handleSubmit.mutate(e)}>
           {/* Email */}

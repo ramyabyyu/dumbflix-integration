@@ -14,55 +14,35 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { useRef } from "react";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
+import { useQuery } from "react-query";
+import { API } from "../config/api";
 
 const Profile = () => {
-  // const [userData, setUserData] = useState(initialUserState);
+  // Global State
+  const [state] = useContext(UserContext);
+  const [isAuthenticate, setIsAuthenticate] = useState(false);
 
-  // const user = JSON.parse(localStorage.getItem("user"));
+  const { data: profile } = useQuery("profileCache", async () => {
+    const response = await API.get("/profile");
+    console.log(response.data.data);
+    return response.data.data;
+  });
 
-  // const navigate = useNavigate();
-
-  // // Image Upload
-  // const [profileSrc, setProfileSrc] = useState(userData.photo);
+  const navigate = useNavigate();
 
   const hiddenFileInput = useRef(null);
 
   const handleFileInput = (e) => hiddenFileInput.current.click();
 
-  // const handleFileChange = (files) => {
-  //   setUserData({ ...userData, photo: files });
-  // };
+  useEffect(() => {
+    if (!isAuthenticate) navigate("/");
+  }, [isAuthenticate]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setIsLogin(true);
-  //     setUserData({
-  //       ...userData,
-  //       email: user?.email,
-  //       password: user?.password,
-  //       fullName: user?.fullName,
-  //       gender: user?.gender,
-  //       phone: user?.phone,
-  //       address: user?.address,
-  //     });
-  //   } else {
-  //     setIsLogin(false);
-  //     setUserData(initialUserState);
-  //     navigate("/");
-  //   }
-  // }, [user, isLogin]);
-
-  // useEffect(() => {
-  //   // Image upload
-  //   if (userData.photo != noPeople) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       let result = reader.result;
-  //       setProfileSrc(result);
-  //     };
-  //     reader.readAsDataURL(userData.photo);
-  //   }
-  // }, [userData.photo]);
+  useEffect(() => {
+    if (state.user) setIsAuthenticate(true);
+  }, [state.user]);
 
   return (
     <Container>
@@ -77,7 +57,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaUserCircle className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>Ramy Gantenng</h5>
+                      <h5>{profile?.full_name}</h5>
                       <p className="text-muted">Full Name</p>
                     </div>
                   </div>
