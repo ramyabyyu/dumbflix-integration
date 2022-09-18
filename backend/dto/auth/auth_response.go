@@ -18,5 +18,6 @@ type RegisterResponse struct {
 	Gender   string `json:"gender"`
 	Phone    string `json:"phone"`
 	Photo    string `json:"-"`
+	IsActive bool   `json:"is_active"`
 	Message  string `json:"message"`
 }

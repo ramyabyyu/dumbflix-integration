@@ -2,10 +2,17 @@ package profiledto
 
 type ProfileResponse struct {
 	ID       int    `json:"id"`
-	FullName string `json:"full_name" validate:"required"`
-	Phone    string `json:"phone" validate:"required"`
-	Photo    string `json:"photo" validate:"required"`
-	Gender   string `json:"gender" validate:"required"`
-	Address  string `json:"address" validate:"required"`
-	UserID   int    `json:"user_id" validate:"required"`
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Photo    string `json:"photo"`
+	IsActive bool   `json:"is_active"`
+	Gender   string `json:"gender"`
+	Address  string `json:"address"`
+	UserID   int    `json:"user_id"`
+}
+
+type ChangeProfilePhotoResponse struct {
+	ID    int    `json:"id"`
+	Photo string `json:"photo"`
 }

@@ -22,7 +22,6 @@ import { API } from "../config/api";
 const Profile = () => {
   // Global State
   const [state] = useContext(UserContext);
-  const [isAuthenticate, setIsAuthenticate] = useState(false);
 
   const { data: profile } = useQuery("profileCache", async () => {
     const response = await API.get("/profile");
@@ -37,11 +36,9 @@ const Profile = () => {
   const handleFileInput = (e) => hiddenFileInput.current.click();
 
   useEffect(() => {
-    if (!isAuthenticate) navigate("/");
-  }, [isAuthenticate]);
-
-  useEffect(() => {
-    if (state.user) setIsAuthenticate(true);
+    if (!state.user) {
+      navigate("/");
+    }
   }, [state.user]);
 
   return (
@@ -65,7 +62,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaEnvelope className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>ramy@dumbflix.com</h5>
+                      <h5>{profile?.email}</h5>
                       <p className="text-muted">Email Address</p>
                     </div>
                   </div>
@@ -79,14 +76,13 @@ const Profile = () => {
                   </div>
                   {/* Gender */}
                   <div className="d-flex mb-3 align-items-start">
-                    {/* {userData.gender === "Male" ? (
+                    {profile?.gender === "Male" ? (
                       <FaMale className="text-danger me-3 fs-1" />
                     ) : (
                       <FaFemale className="text-danger me-3 fs-1" />
-                    )} */}
-                    <FaMale className="text-danger me-3 fs-1" />
+                    )}
                     <div>
-                      <h5>Male</h5>
+                      <h5>{profile?.gender}</h5>
                       <p className="text-muted">Gender</p>
                     </div>
                   </div>
@@ -94,7 +90,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaPhone className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>082121273909</h5>
+                      <h5>{profile?.phone}</h5>
                       <p className="text-muted">Phone Number</p>
                     </div>
                   </div>
@@ -102,7 +98,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaMapMarked className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>Jln in aja</h5>
+                      <h5>{profile?.address}</h5>
                       <p className="text-muted">Address</p>
                     </div>
                   </div>

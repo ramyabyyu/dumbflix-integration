@@ -7,12 +7,14 @@ type Profile struct {
 	Address  string              `json:"address"`
 	Phone    string              `json:"phone" gorm:"type: varchar(255)"`
 	Photo    string              `json:"photo" gorm:"type: varchar(255)"`
+	IsActive bool                `json:"is_active"`
 	UserID   int                 `json:"user_id"`
 	User     UserProfileResponse `json:"user"`
 }
 
 type UserProfileResponse struct {
-	ID int `json:"id"`
+	ID    int    `json:"id"`
+	Email string `json:"email"`
 }
 
 func (UserProfileResponse) TableName() string {

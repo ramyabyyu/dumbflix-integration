@@ -10,3 +10,7 @@ type UpdateProfileRequest struct {
 	UserID   int    					`json:"user_id"`
 	User     models.UserProfileResponse `json:"user"`
 }
+
+type ChangeProfilePhotoRequest struct {
+	Photo string `json:"photo"`
+}

@@ -64,6 +64,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 			Address: request.Address,
 			Phone: request.Phone,
 			Photo: "-",
+			IsActive: true,
 		},
 	}
 
@@ -111,6 +112,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Gender: data.Profile.Gender,
 		Phone: data.Profile.Phone,
 		Photo: data.Profile.Photo,
+		IsActive: data.Profile.IsActive,
 		Token: token,
 		Message: "Register Success",
 	}
