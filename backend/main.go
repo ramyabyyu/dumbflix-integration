@@ -38,6 +38,9 @@ func main() {
 
 	routes.RoutesInit(r.PathPrefix("/api/v1").Subrouter())
 
+	// path file
+	r.PathPrefix("/uploads").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
+
 	// Config CORS
 	var allowedHeaders = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	var allowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PATCH", "DELETE", "PUT", "HEAD"})

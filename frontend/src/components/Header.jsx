@@ -19,6 +19,8 @@ import {
   FaSignOutAlt,
   FaFilm,
 } from "react-icons/fa";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 const Header = () => {
   // Modal
@@ -26,12 +28,9 @@ const Header = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  // Dropdown Logout
-  const openLogoutDropdown = () => {
-    document.getElementById("logout-confirm-dropdown").click();
-  };
-
   const [isLogin, setIsLogin] = useState(false);
+
+  const [state] = useContext(UserContext);
 
   const user = localStorage.getItem("token");
 
@@ -91,10 +90,7 @@ const Header = () => {
                   <Dropdown.Item href="/movies">
                     <FaFilm className="text-danger me-2" /> <span>Film</span>
                   </Dropdown.Item>
-                  <Dropdown.Divider
-                    className="bg-secondary"
-                    onClick={openLogoutDropdown}
-                  />
+                  <Dropdown.Divider className="bg-secondary" />
                   <Dropdown.Item href="#" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />
                     <span>Logout</span>

@@ -103,16 +103,10 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	registerResponse := authdto.RegisterResponse{
+	registerResponse := authdto.AuthResponse{
 		ID: data.ID,
-		FullName: data.Profile.FullName,
 		Email: data.Email,
 		IsAdmin: data.IsAdmin,
-		Address: data.Profile.Address,
-		Gender: data.Profile.Gender,
-		Phone: data.Profile.Phone,
-		Photo: data.Profile.Photo,
-		IsActive: data.Profile.IsActive,
 		Token: token,
 		Message: "Register Success",
 	}
@@ -138,11 +132,8 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Password: request.Password,
 	}
 
-	fmt.Println("Email")
-	fmt.Println(request.Email)
-
 	// Check Email
-	user, err := h.AuthRepository.Login(user.Email)
+	data, err := h.AuthRepository.Login(user.Email)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
@@ -150,16 +141,13 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("user")
-	fmt.Println(user)
-
 	// Get Old User Password
 	// oldPassword, _ := h.AuthRepository.GetUserPassword(user.Email)
 	// fmt.Println("request.Password:", request.Password)
 	// fmt.Println("oldpassword:",oldPassword)
 	// Check Password
 
-	isValid := bcrypt.CheckPasswordHash(request.Password, user.Password)
+	isValid := bcrypt.CheckPasswordHash(request.Password, data.Password)
 	if !isValid {
 		w.WriteHeader(http.StatusBadRequest)
 		
@@ -172,8 +160,8 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 
 	// generate token
 	claims := jwt.MapClaims{}
-	claims["id"] = user.ID
-	claims["isAdmin"] = user.IsAdmin
+	claims["id"] = data.ID
+	claims["isAdmin"] = data.IsAdmin
 	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
 
 	token, errGenerateToken := jwtToken.GenerateToken(&claims)
@@ -183,10 +171,10 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	loginResponse := authdto.LoginResponse{
-		ID: user.ID,
-		Email: request.Email,
-		IsAdmin: user.IsAdmin,
+	loginResponse := authdto.AuthResponse{
+		ID: data.ID,
+		Email: data.Email,
+		IsAdmin: data.IsAdmin,
 		Token: token,
 		Message: "Login Success",
 	}
