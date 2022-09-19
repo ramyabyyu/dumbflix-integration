@@ -9,6 +9,7 @@ type User struct {
 	IsAdmin   bool      `json:"is_admin"`
 	Profile   Profile   `json:"profile"`
 	Films 	[]Film `json:"films"`
+	Transactions []Transaction `json:"transactions"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
