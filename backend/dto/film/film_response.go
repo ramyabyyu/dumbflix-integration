@@ -7,4 +7,5 @@ type FilmResponse struct {
 	Description   string `json:"description"`
 	Year          int    `json:"year"`
 	Category      string `json:"category"`
+	UserId        int    `json:"user_id"`
 }

@@ -85,7 +85,17 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
+	filmResponse := filmdto.FilmResponse{
+		ID: film.ID,
+		Title: film.Title,
+		ThumbnailFilm: film.ThumbnailFilm,
+		Description: film.Description,
+		Year: film.Year,
+		Category: film.Category,
+		UserId: userId,
+	}
+
 	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: film}
+	response := dto.SuccessResult{Code: http.StatusOK, Data: filmResponse}
 	json.NewEncoder(w).Encode(response)
 }

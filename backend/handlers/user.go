@@ -3,9 +3,13 @@ package handlers
 import (
 	dto "dumbflix/dto/result"
 	userdto "dumbflix/dto/user"
+	jwtToken "dumbflix/pkg/jwt"
 	"dumbflix/repositories"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -61,6 +65,20 @@ func (h *handler) ChangeUserRole(w http.ResponseWriter, r *http.Request) {
 	// Change user role into admin
 	user.IsAdmin = true;
 
+	// Generate token data
+	// generate token
+	claims := jwt.MapClaims{}
+	claims["id"] = user.ID
+	claims["isAdmin"] = user.IsAdmin
+	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
+
+	token, errGenerateToken := jwtToken.GenerateToken(&claims)
+	if errGenerateToken != nil {
+		log.Println(errGenerateToken)
+		fmt.Println("Unauthorized")
+		return
+	}
+
 	data, err := h.UserRepository.ChangeUserRole(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -71,6 +89,7 @@ func (h *handler) ChangeUserRole(w http.ResponseWriter, r *http.Request) {
 
 	userResponse := userdto.ChangeUserRoleResponse {
 		IsAdmin: data.IsAdmin,
+		Token: token,
 		Message: "Changed role to admin successfully",
 	}
 
