@@ -30,7 +30,9 @@ const Header = () => {
 
   const [isLogin, setIsLogin] = useState(false);
 
-  const [state] = useContext(UserContext);
+  const [state, dispatch] = useContext(UserContext);
+
+  console.log(state);
 
   const user = localStorage.getItem("token");
 

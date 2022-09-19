@@ -13,8 +13,9 @@ type Profile struct {
 }
 
 type UserProfileResponse struct {
-	ID    int    `json:"id"`
-	Email string `json:"email"`
+	ID      int    `json:"id"`
+	Email   string `json:"email"`
+	IsAdmin bool   `json:"is_admin"`
 }
 
 func (UserProfileResponse) TableName() string {

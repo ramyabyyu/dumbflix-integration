@@ -1,0 +1,10 @@
+package filmdto
+
+type FilmResponse struct {
+	ID            int    `json:"id"`
+	Title         string `json:"title"`
+	ThumbnailFilm string `json:"thumbnail_film"`
+	Description   string `json:"description"`
+	Year          int    `json:"year"`
+	Category      string `json:"category"`
+}

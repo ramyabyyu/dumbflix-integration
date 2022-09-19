@@ -46,7 +46,7 @@ const Profile = () => {
 
   const handleFileChange = (files) => {
     // image for preview
-    setImgChange(files[0]);
+    setImgChange(files);
   };
 
   const fetchProfile = async () => {
@@ -171,7 +171,11 @@ const Profile = () => {
               </div>
               <div className="w-50">
                 <img
-                  src={`http://localhost:8080/uploads/${profileData.photo}`}
+                  src={
+                    profileData.photo !== "" && imgChange === ""
+                      ? `http://localhost:8080/uploads/${profileData.photo}`
+                      : imgSrc
+                  }
                   alt="nophoto"
                   className="profile__img rounded"
                   id="profile-photo"
@@ -188,7 +192,7 @@ const Profile = () => {
                     name="file"
                     accept="image/*"
                     className="d-none"
-                    onChange={(e) => handleFileChange(e.target.files)}
+                    onChange={(e) => handleFileChange(e.target.files[0])}
                   />
                   <Button
                     variant="danger"

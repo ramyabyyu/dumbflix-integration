@@ -8,6 +8,7 @@ type User struct {
 	Password  string    `json:"-" gorm:"type: varchar(255)"`
 	IsAdmin   bool      `json:"is_admin"`
 	Profile   Profile   `json:"profile"`
+	Films 	[]Film `json:"films"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }

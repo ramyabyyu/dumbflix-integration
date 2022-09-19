@@ -46,6 +46,7 @@ func (h *handlerProfile) GetProfile(w http.ResponseWriter, r *http.Request) {
 		ID: profile.ID,
 		FullName: profile.FullName,
 		Email: profile.User.Email,
+		IsAdmin: profile.User.IsAdmin,
 		Gender: profile.Gender,
 		Photo: profile.Photo,
 		IsActive: profile.IsActive,

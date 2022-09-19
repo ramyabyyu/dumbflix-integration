@@ -16,6 +16,7 @@ const initialUserState = {
   gender: "",
   phone: "",
   address: "",
+  photo: "",
 };
 
 const AuthModal = ({ show, handleClose }) => {

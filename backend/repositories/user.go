@@ -8,6 +8,8 @@ import (
 
 type UserRepository interface {
 	GetAllUsers() ([]models.User, error)
+	GetUser(ID int) (models.User, error)
+	ChangeUserRole(user models.User) (models.User, error)
 }
 
 func RepositoryUser(db *gorm.DB) *repository {
@@ -20,4 +22,18 @@ func (r *repository) GetAllUsers() ([]models.User, error) {
 	err := r.db.Find(&users).Error
 
 	return users, err
+}
+
+func (r *repository) GetUser(ID int) (models.User, error) {
+	var user models.User
+	// Using Preload("profile") to find data with relation to profile and Preload("Products") for relation to Products here ...
+	err := r.db.Preload("Profile").First(&user, ID).Error
+
+	return user, err
+}
+
+func (r *repository) ChangeUserRole(user models.User) (models.User, error) {
+	err := r.db.Debug().Save(&user).Error
+
+	return user, err
 }

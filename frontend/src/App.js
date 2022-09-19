@@ -17,10 +17,13 @@ const App = () => {
 
   const [state, dispatch] = useContext(UserContext);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    if (!localStorage.token) state.isLogin = false;
-    else setAuthToken(localStorage.token);
-  }, [localStorage]);
+    if (token) {
+      setAuthToken(token);
+    }
+  }, [state]);
 
   return (
     <>

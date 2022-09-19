@@ -108,6 +108,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Email: data.Email,
 		IsAdmin: data.IsAdmin,
 		Token: token,
+		Photo: data.Profile.Photo,
 		Message: "Register Success",
 	}
 
@@ -176,6 +177,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Email: data.Email,
 		IsAdmin: data.IsAdmin,
 		Token: token,
+		Photo: data.Profile.Photo,
 		Message: "Login Success",
 	}
 

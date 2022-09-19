@@ -6,4 +6,5 @@ func RoutesInit(r *mux.Router) {
 	UserRoutes(r)
 	AuthRoutes(r)
 	ProfileRoutes(r)
+	FilmRoutes(r)
 }

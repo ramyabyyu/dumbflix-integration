@@ -4,6 +4,7 @@ type ProfileResponse struct {
 	ID       int    `json:"id"`
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
+	IsAdmin  bool   `json:"is_admin"`
 	Phone    string `json:"phone"`
 	Photo    string `json:"photo"`
 	IsActive bool   `json:"is_active"`

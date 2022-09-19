@@ -2,6 +2,7 @@ package routes
 
 import (
 	"dumbflix/handlers"
+	"dumbflix/pkg/middlewares"
 	"dumbflix/pkg/mysql"
 	"dumbflix/repositories"
 
@@ -13,4 +14,5 @@ func UserRoutes(r *mux.Router) {
 	h := handlers.HandlerUser(userRepository)
 
 	r.HandleFunc("/users", h.GetAllUsers).Methods("GET")
+	r.HandleFunc("/admin", middlewares.Auth(h.ChangeUserRole)).Methods("POST")
 }
