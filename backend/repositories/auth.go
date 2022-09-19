@@ -9,6 +9,7 @@ import (
 type AuthRepository interface {
 	Register(user models.User) (models.User, error)
 	Login(email string) (models.User, error)
+	GetAllUsers() ([]models.User, error)
 	GetUserPassword(email string) (string, error)
 	CheckEmailExist(email string) error
 }
@@ -31,6 +32,14 @@ func (r *repository) Login(email string) (models.User, error) {
 	// err := r.db.Raw("SELECT * FROM users WHERE email=?", email).Scan(&user).Error
 
 	return user, err
+}
+
+func (r *repository) GetAllUsers() ([]models.User, error) {
+	var users []models.User
+
+	err := r.db.Find(&users).Error
+
+	return users, err
 }
 
 func (r *repository) GetUserPassword(email string) (string, error) {

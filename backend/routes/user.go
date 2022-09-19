@@ -12,7 +12,5 @@ import (
 func UserRoutes(r *mux.Router) {
 	userRepository := repositories.RepositoryUser(mysql.DB)
 	h := handlers.HandlerUser(userRepository)
-
-	r.HandleFunc("/users", h.GetAllUsers).Methods("GET")
 	r.HandleFunc("/admin", middlewares.Auth(h.ChangeUserRole)).Methods("POST")
 }

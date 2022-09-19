@@ -54,10 +54,25 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
+	// GetAllUsers, if record user is still empty, then user role is admin, else user role is not admin
+	users, err := h.AuthRepository.GetAllUsers()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+	}
+
+	var isAdmin bool
+	if len(users) == 0 {
+		isAdmin = true
+	} else {
+		isAdmin = false
+	}
+
 	user := models.User {
 		Email: request.Email,
 		Password: password,
-		IsAdmin: false,
+		IsAdmin: isAdmin,
 		Profile: models.Profile{
 			FullName: request.FullName,
 			Gender: request.Gender,
