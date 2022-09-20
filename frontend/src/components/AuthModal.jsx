@@ -1,13 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { UserContext } from "../context/userContext";
 import { API } from "../config/api";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../assets/css/Auth.modules.css";
-import * as AuthTypes from "../types/auth";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { reset, register, login } from "../features/auth/authSlice";
 
 const initialUserState = {
   email: "",
@@ -26,9 +26,12 @@ const AuthModal = ({ show, handleClose }) => {
 
   const [userData, setUserData] = useState(initialUserState);
 
-  const [errResMsg, setErrResMsg] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [state, dispatch] = useContext(UserContext);
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
 
   const switchMode = () => {
     setShowPw(false);
@@ -42,49 +45,27 @@ const AuthModal = ({ show, handleClose }) => {
     }));
   };
 
-  const navigate = useNavigate();
-
-  const handleSubmit = useMutation(async (e) => {
-    try {
-      e.preventDefault();
-
-      let response;
-
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-
-      if (isRegister) {
-        response = await API.post("/register", userData, config);
-      } else {
-        response = await API.post("/login", userData, config);
-      }
-
-      if (response.status === 200) {
-        dispatch({
-          type: AuthTypes.AUTH_SUCCESS,
-          payload: response.data.data,
-        });
-
-        handleClose();
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: AuthTypes.AUTH_ERROR,
-      });
-      setErrResMsg(error.response.data.message);
-    }
-  });
-
   useEffect(() => {
-    if (errResMsg !== "") {
-      const formAlert = document.getElementById("form-alert");
-      formAlert.classList.remove("d-none");
+    if (isError) {
+      toast.error(message);
+      handleClose("/");
     }
-  }, [errResMsg, isRegister]);
+
+    if (isSuccess || user) {
+      toast.success("Welcome");
+      navigate("/");
+      handleClose();
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isRegister) dispatch(register(userData));
+    else dispatch(login(userData));
+  };
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -92,14 +73,7 @@ const AuthModal = ({ show, handleClose }) => {
         <Modal.Title>{isRegister ? "Register" : "Login"}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-dark text-white border-0">
-        <div
-          id="form-alert"
-          class="alert alert-danger fade show d-none"
-          role="alert"
-        >
-          <strong>{errResMsg}</strong>
-        </div>
-        <Form className="px-1" onSubmit={(e) => handleSubmit.mutate(e)}>
+        <Form className="px-1" onSubmit={handleSubmit}>
           {/* Email */}
           <Form.Group className="mb-3" controlId="email">
             <Form.Control
@@ -193,8 +167,17 @@ const AuthModal = ({ show, handleClose }) => {
               variant={isRegister ? "light" : "danger"}
               type="submit"
               className={isRegister ? "text-danger" : "text-white"}
+              disabled={isLoading == true}
             >
-              {isRegister ? "Register" : "Login"}
+              {isLoading ? (
+                <>
+                  <Spinner animation="border" variant="secondary" />
+                </>
+              ) : isRegister ? (
+                "Register"
+              ) : (
+                "Login"
+              )}
             </Button>
             <p className="text-muted text-center mt-2">
               {isRegister

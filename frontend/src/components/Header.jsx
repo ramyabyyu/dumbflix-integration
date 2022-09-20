@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   // Modal
@@ -24,23 +25,18 @@ const Header = () => {
 
   const [isLogin, setIsLogin] = useState(false);
 
-  const [state, dispatch] = useContext(UserContext);
-
-  const user = localStorage.getItem("token");
-  const isAdmin = localStorage.getItem("is_admin");
+  const { user } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("is_admin");
     navigate("/");
   };
 
   useEffect(() => {
     if (user) setIsLogin(true);
     else setIsLogin(false);
-  }, [user, handleLogout]);
+  }, [user]);
 
   return (
     <Navbar variant="dark" bg="dark" expand="lg" className="sticky-sm-top">
@@ -80,7 +76,7 @@ const Header = () => {
                     <FaMoneyBillAlt className="text-danger me-2" />{" "}
                     <span>Pay</span>
                   </Dropdown.Item>
-                  {isAdmin === "true" && (
+                  {/* {isAdmin === "true" && (
                     <>
                       <Dropdown.Item href="/add-film">
                         <FaFilm className="text-danger me-2" />{" "}
@@ -91,7 +87,7 @@ const Header = () => {
                         <span>Transaction</span>
                       </Dropdown.Item>
                     </>
-                  )}
+                  )} */}
                   <Dropdown.Divider className="bg-secondary" />
                   <Dropdown.Item href="#" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />

@@ -4,20 +4,15 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { UserContextProvider } from "./context/userContext";
-import { QueryClient, QueryClientProvider } from "react-query";
 
-const client = new QueryClient();
+import { store } from "./app/store";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <UserContextProvider>
-      <QueryClientProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </UserContextProvider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
