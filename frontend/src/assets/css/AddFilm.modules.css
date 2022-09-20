@@ -1,0 +1,8 @@
+.bg-group {
+  background-color: grey !important;
+  color: #fff !important;
+}
+
+.bg-group::placeholder {
+  color: white !important;
+}

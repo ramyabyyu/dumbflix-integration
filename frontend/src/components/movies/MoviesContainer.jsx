@@ -1,61 +1,63 @@
-import React, { useState } from "react";
-import dummyTvSeriesImg from "../../assets/images/img2.webp";
+import React from "react";
+import { useState } from "react";
 import { Row, Col, Container, Card } from "react-bootstrap";
-import TvSeriesList from "./TvSeriesList";
+import dummyMovieImg from "../../assets/images/img2.webp";
+import MovieList from "./MovieList";
+import "../../assets/css/TvSeriesAndMovies.modules.css";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import "../../assets/css/TvSeriesAndMovies.modules.css";
 
-const TvSeriesContainer = () => {
-  const [tvSeriesList, setTvSeriesList] = useState([
+const MoviesContainer = () => {
+  const [movieLists, setMovieLists] = useState([
     {
-      tvSeriesImg: dummyTvSeriesImg,
+      movieImg: dummyMovieImg,
       title: "Money Heist",
       year: 2022,
-      type: "Tv Series",
+      type: "Movie",
     },
     {
-      tvSeriesImg: dummyTvSeriesImg,
+      movieImg: dummyMovieImg,
       title: "Money Heist",
       year: 2022,
-      type: "Tv Series",
+      type: "Movie",
     },
     {
-      tvSeriesImg: dummyTvSeriesImg,
+      movieImg: dummyMovieImg,
       title: "Money Heist",
       year: 2022,
-      type: "Tv Series",
+      type: "Movie",
     },
     {
-      tvSeriesImg: dummyTvSeriesImg,
+      movieImg: dummyMovieImg,
       title: "Money Heist",
       year: 2022,
-      type: "Tv Series",
+      type: "Movie",
     },
     {
-      tvSeriesImg: dummyTvSeriesImg,
+      movieImg: dummyMovieImg,
       title: "Money Heist",
       year: 2022,
-      type: "Tv Series",
+      type: "Movie",
     },
   ]);
+
   return (
-    <Container className="my-5 overflow-hidden" id="tv-series">
-      <h3 className="text-start text-white fw-bold mb-3">Tv Series</h3>
+    <Container className="my-5 overflow-hidden" id="movie">
+      <h3 className="text-start text-white fw-bold mb-3">Movie</h3>
       <Row>
-        {tvSeriesList.map((tv, index) => (
+        {movieLists.map((movie, index) => (
           <Col md={2} key={index}>
-            <TvSeriesList
-              tvSeriesImg={tv.tvSeriesImg}
-              title={tv.title}
-              year={tv.year}
+            <MovieList
+              movieImg={movie.movieImg}
+              title={movie.title}
+              year={movie.year}
             />
           </Col>
         ))}
         <Col md={2}>
           <Card className="rounded shadow border-0 bg-dark text-white d-flex justify-content-center align-items-center">
             <Link
-              to="/series"
+              to="/movies"
               className="text-decoration-none text-white see__more-link"
             >
               <p>
@@ -69,4 +71,4 @@ const TvSeriesContainer = () => {
   );
 };
 
-export default TvSeriesContainer;
+export default MoviesContainer;

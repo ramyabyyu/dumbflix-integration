@@ -1,13 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {
-  Navbar,
-  Container,
-  Nav,
-  Button,
-  Dropdown,
-  Modal,
-} from "react-bootstrap";
+import { Navbar, Container, Nav, Button, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import AuthModal from "./AuthModal";
 import dumbflixLogo from "../assets/images/dumbflix_logo.png";
@@ -18,6 +11,7 @@ import {
   FaMoneyBillAlt,
   FaSignOutAlt,
   FaFilm,
+  FaDollarSign,
 } from "react-icons/fa";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
@@ -32,14 +26,14 @@ const Header = () => {
 
   const [state, dispatch] = useContext(UserContext);
 
-  console.log(state);
-
   const user = localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("is_admin");
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("is_admin");
     navigate("/");
   };
 
@@ -57,11 +51,8 @@ const Header = () => {
             <Nav.Link as={Link} className="fw-bold" to="/">
               Home
             </Nav.Link>
-            <Nav.Link className="fw-bold" href="#tv-series">
-              Tv Show
-            </Nav.Link>
-            <Nav.Link className="fw-bold" href="#movie">
-              Movies
+            <Nav.Link className="fw-bold" to="all-movies" as={Link}>
+              Show All Movies
             </Nav.Link>
           </Nav>
           <div>
@@ -89,9 +80,18 @@ const Header = () => {
                     <FaMoneyBillAlt className="text-danger me-2" />{" "}
                     <span>Pay</span>
                   </Dropdown.Item>
-                  <Dropdown.Item href="/movies">
-                    <FaFilm className="text-danger me-2" /> <span>Film</span>
-                  </Dropdown.Item>
+                  {isAdmin === "true" && (
+                    <>
+                      <Dropdown.Item href="/add-film">
+                        <FaFilm className="text-danger me-2" />{" "}
+                        <span>Add Film</span>
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/transaction">
+                        <FaDollarSign className="text-danger me-2" />{" "}
+                        <span>Transaction</span>
+                      </Dropdown.Item>
+                    </>
+                  )}
                   <Dropdown.Divider className="bg-secondary" />
                   <Dropdown.Item href="#" onClick={handleLogout}>
                     <FaSignOutAlt className="text-danger me-2" />

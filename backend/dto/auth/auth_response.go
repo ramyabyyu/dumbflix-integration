@@ -8,3 +8,9 @@ type AuthResponse struct {
 	Message string `json:"message"`
 	Photo   string `json:"photo"`
 }
+
+type CheckAuthResponse struct {
+	Id       int    `gorm:"type: int" json:"id"`
+	FullName string `gorm:"type: varchar(255)" json:"name"`
+	Email    string `gorm:"type: varchar(255)" json:"email"`
+}

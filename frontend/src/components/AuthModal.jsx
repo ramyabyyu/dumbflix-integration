@@ -62,7 +62,7 @@ const AuthModal = ({ show, handleClose }) => {
         response = await API.post("/login", userData, config);
       }
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         dispatch({
           type: AuthTypes.AUTH_SUCCESS,
           payload: response.data.data,

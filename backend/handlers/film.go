@@ -53,6 +53,18 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
 	userId := int(userInfo["id"].(float64))
 
+	// get file name
+	// dataContext := r.Context().Value("dataFile")
+	// filename := dataContext.(string)
+
+	// request := filmdto.FilmRequest{
+	// 	Title: r.FormValue("title"),
+	// 	ThumbnailFilm: filename,
+	// 	Description: r.FormValue("description"),
+	// 	Year: r.FormValue("year"),
+	// 	Category: r.FormValue("category"),
+	// }
+
 	request := new(filmdto.FilmRequest)
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -71,7 +83,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 
 	film := models.Film{
 		Title: request.Title,
-		ThumbnailFilm: "-",
+		ThumbnailFilm: request.ThumbnailFilm,
 		Description: request.Description,
 		Year: request.Year,
 		Category: request.Category,

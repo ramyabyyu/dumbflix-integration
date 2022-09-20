@@ -171,11 +171,7 @@ const Profile = () => {
               </div>
               <div className="w-50">
                 <img
-                  src={
-                    profileData.photo !== "" && imgChange === ""
-                      ? `http://localhost:8080/uploads/${profileData.photo}`
-                      : imgSrc
-                  }
+                  src={imgSrc}
                   alt="nophoto"
                   className="profile__img rounded"
                   id="profile-photo"
