@@ -10,14 +10,15 @@ const auth = async (userData, isRegister) => {
   }
 
   if (response.data) {
-    localStorage.setItem("token", response.data.data.token);
+    const user = JSON.stringify(response.data.data);
+    localStorage.setItem("user", user);
   }
 
   return response.data.data;
 };
 
 const logout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
 const authService = {

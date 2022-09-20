@@ -48,12 +48,12 @@ const AuthModal = ({ show, handleClose }) => {
   useEffect(() => {
     if (isError) {
       toast.error(message);
-      handleClose("/");
+      handleClose();
     }
 
     if (isSuccess || user) {
-      toast.success("Welcome");
       navigate("/");
+      toast.success("Welcome");
       handleClose();
     }
 
@@ -82,6 +82,7 @@ const AuthModal = ({ show, handleClose }) => {
               className="bg-group"
               placeholder="Email"
               onChange={handleChange}
+              autoFocus
             />
           </Form.Group>
 

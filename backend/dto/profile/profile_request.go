@@ -8,7 +8,7 @@ type UpdateProfileRequest struct {
 	Gender   string 					`json:"gender" gorm:"type: varchar(255)"`
 	Address  string 					`json:"address" gorm:"type: text"`
 	UserID   int    					`json:"user_id"`
-	User     models.UserProfileResponse `json:"user"`
+	User     models.ProfileUserResponse `json:"user"`
 }
 
 type ChangeProfilePhotoRequest struct {

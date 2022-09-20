@@ -3,7 +3,7 @@ import { serviceErrorMessage } from "../../helpers/serviceErrorMessage";
 import authService from "./authService";
 
 // get user token from localStorage
-const user = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   user: user ? user : null,
@@ -20,8 +20,6 @@ export const register = createAsyncThunk(
     try {
       return await authService.auth(userData, true);
     } catch (error) {
-      console.log("Uwowow");
-      console.log(error.response.data);
       serviceErrorMessage(error, thunkAPI);
     }
   }
@@ -61,11 +59,6 @@ export const authSlice = createSlice({
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload;
-      })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
@@ -73,20 +66,25 @@ export const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
-      // case login
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
+      })
+      // case login
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
       })
       // logout
       .addCase(logout.fulfilled, (state) => {

@@ -9,15 +9,15 @@ type Profile struct {
 	Photo    string              `json:"photo" gorm:"type: varchar(255)"`
 	IsActive bool                `json:"is_active"`
 	UserID   int                 `json:"user_id"`
-	User     UserProfileResponse `json:"user"`
+	User     ProfileUserResponse `json:"-"`
 }
 
-type UserProfileResponse struct {
+type ProfileUserResponse struct {
 	ID      int    `json:"id"`
 	Email   string `json:"email"`
 	IsAdmin bool   `json:"is_admin"`
 }
 
-func (UserProfileResponse) TableName() string {
-	return "users"
+func (ProfileUserResponse) TableName() string {
+	return "profiles"
 }

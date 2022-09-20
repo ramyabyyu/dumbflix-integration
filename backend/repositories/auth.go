@@ -28,7 +28,7 @@ func (r *repository) Register(user models.User) (models.User, error) {
 func (r *repository) Login(email string) (models.User, error) {
 	var user models.User
 
-	err := r.db.First(&user, "email=?", email).Error
+	err := r.db.Preload("Profile").First(&user, "email=?", email).Error
 
 	// err := r.db.Raw("SELECT * FROM users WHERE email=?", email).Scan(&user).Error
 
@@ -37,7 +37,7 @@ func (r *repository) Login(email string) (models.User, error) {
 
 func (r *repository) Getuser(ID int) (models.User, error) {
 	var user models.User
-	err := r.db.First(&user, ID).Error
+	err := r.db.Debug().First(&user, ID).Error
 
 	return user, err
 }
