@@ -46,19 +46,12 @@ const AuthModal = ({ show, handleClose }) => {
   };
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-      handleClose();
-    }
+    dispatch(reset());
 
     if (isSuccess || user) {
-      navigate("/");
-      toast.success("Welcome");
       handleClose();
     }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [user, message, isSuccess, user, navigate, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

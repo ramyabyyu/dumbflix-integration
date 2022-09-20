@@ -69,7 +69,7 @@ const Header = () => {
                   />
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="dark">
-                  <Dropdown.Item to="/profile" as={Link}>
+                  <Dropdown.Item href="/profile">
                     <FaUserAlt className="text-danger me-2" />{" "}
                     <span>Profile</span>
                   </Dropdown.Item>

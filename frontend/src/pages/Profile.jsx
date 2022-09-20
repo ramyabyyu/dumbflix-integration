@@ -13,7 +13,6 @@ import {
   FaRegMoneyBillAlt,
   FaUserCircle,
 } from "react-icons/fa";
-import { useRef } from "react";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
@@ -21,17 +20,17 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  const hiddenFileInput = () => {};
-  const handleFileInput = () => {};
-  const handleFileChange = (files) => {};
+  // const hiddenFileInput = () => {};
+  // const handleFileInput = () => {};
+  // const handleFileChange = (files) => {};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // };
 
   useEffect(() => {
     if (!user) navigate("/");
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <Container>
@@ -46,7 +45,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaUserCircle className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.data?.full_name}</h5>
+                      <h5>{user?.full_name}</h5>
                       <p className="text-muted">Full Name</p>
                     </div>
                   </div>
@@ -54,7 +53,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaEnvelope className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.data?.email}</h5>
+                      <h5>{user?.email}</h5>
                       <p className="text-muted">Email Address</p>
                     </div>
                   </div>
@@ -62,20 +61,20 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.data?.is_active ? "Active" : "Inactive"}</h5>
+                      <h5>{user?.is_active ? "Active" : "Inactive"}</h5>
                       <p className="text-muted">Status</p>
                     </div>
                   </div>
 
                   {/* Gender */}
                   <div className="d-flex mb-3 align-items-start">
-                    {user?.data?.gender === "Male" ? (
+                    {user?.gender === "Male" ? (
                       <FaMale className="text-danger me-3 fs-1" />
                     ) : (
                       <FaFemale className="text-danger me-3 fs-1" />
                     )}
                     <div>
-                      <h5>{user?.data?.gender}</h5>
+                      <h5>{user?.gender}</h5>
                       <p className="text-muted">Gender</p>
                     </div>
                   </div>
@@ -84,7 +83,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaPhone className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.data?.phone}</h5>
+                      <h5>{user?.phone}</h5>
                       <p className="text-muted">Phone Number</p>
                     </div>
                   </div>
@@ -93,7 +92,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaMapMarked className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.data?.address}</h5>
+                      <h5>{user?.address}</h5>
                       <p className="text-muted">Address</p>
                     </div>
                   </div>
@@ -101,7 +100,7 @@ const Profile = () => {
               </div>
               <div className="w-50">
                 <img
-                  src={user?.data?.photo !== "-" ? user?.data?.phot : noPeople}
+                  src={user?.photo !== "-" ? user?.photo : noPeople}
                   alt="nophoto"
                   className="profile__img rounded"
                   id="profile-photo"
@@ -109,10 +108,10 @@ const Profile = () => {
                 <Form
                   method="POST"
                   encType="multipart/form-data"
-                  onSubmit={handleSubmit}
+                  // onSubmit={handleSubmit}
                 >
                   {/* Hidden Upload Input */}
-                  <input
+                  {/* <input
                     type="file"
                     ref={hiddenFileInput}
                     name="file"
@@ -133,7 +132,7 @@ const Profile = () => {
                     type="submit"
                   >
                     Upload
-                  </Button>
+                  </Button> */}
                 </Form>
               </div>
             </div>
