@@ -174,7 +174,7 @@ const Profile = () => {
           </Card>
         </Col>
       </Row>
-      <Row className="justify-content-center mt-5">
+      <Row className="justify-content-center my-5">
         <Col md={12}>{user?.is_admin && <Transactions />}</Col>
       </Row>
     </Container>

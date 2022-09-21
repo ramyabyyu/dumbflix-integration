@@ -38,6 +38,7 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 			Description: film.Description,
 			Year: film.Year,
 			Category: film.Category,
+			UserId: film.UserID,
 		})
 	}
 
@@ -54,24 +55,24 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	userId := int(userInfo["id"].(float64))
 
 	// get file name
-	// dataContext := r.Context().Value("dataFile")
-	// filename := dataContext.(string)
+	dataContext := r.Context().Value("dataFile")
+	filename := dataContext.(string)
 
-	// request := filmdto.FilmRequest{
-	// 	Title: r.FormValue("title"),
-	// 	ThumbnailFilm: filename,
-	// 	Description: r.FormValue("description"),
-	// 	Year: r.FormValue("year"),
-	// 	Category: r.FormValue("category"),
-	// }
-
-	request := new(filmdto.FilmRequest)
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
-		json.NewEncoder(w).Encode(response)
-		return
+	request := filmdto.FilmRequest{
+		Title: r.FormValue("title"),
+		ThumbnailFilm: r.FormValue("file"),
+		Description: r.FormValue("description"),
+		Year: r.FormValue("year"),
+		Category: r.FormValue("category"),
 	}
+
+	// request := new(filmdto.FilmRequest)
+	// if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+	// 	json.NewEncoder(w).Encode(response)
+	// 	return
+	// }
 
 	validation := validator.New()
 	err := validation.Struct(request)
@@ -79,11 +80,12 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	film := models.Film{
 		Title: request.Title,
-		ThumbnailFilm: request.ThumbnailFilm,
+		ThumbnailFilm: filename,
 		Description: request.Description,
 		Year: request.Year,
 		Category: request.Category,
@@ -100,7 +102,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	filmResponse := filmdto.FilmResponse{
 		ID: film.ID,
 		Title: film.Title,
-		ThumbnailFilm: film.ThumbnailFilm,
+		ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
 		Description: film.Description,
 		Year: film.Year,
 		Category: film.Category,

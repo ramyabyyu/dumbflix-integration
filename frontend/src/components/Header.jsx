@@ -12,6 +12,7 @@ import {
   FaSignOutAlt,
   FaFilm,
   FaDollarSign,
+  FaSubscript,
 } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
@@ -75,13 +76,16 @@ const Header = () => {
                     <FaUserAlt className="text-danger me-2" />{" "}
                     <span>Profile</span>
                   </Dropdown.Item>
-                  {user?.is_admin && (
-                    <>
-                      <Dropdown.Item as={Link} to={Path.ADMIN_DASHBOARD}>
-                        <RiAdminFill className="text-danger me-2" />{" "}
-                        <span>Dashboard</span>
-                      </Dropdown.Item>
-                    </>
+                  {user?.is_admin ? (
+                    <Dropdown.Item as={Link} to={Path.ADD_FILM}>
+                      <FaFilm className="text-danger me-2" />{" "}
+                      <span>Add Film</span>
+                    </Dropdown.Item>
+                  ) : (
+                    <Dropdown.Item as={Link} to={Path.SUBSCRIBE}>
+                      <FaMoneyBillAlt className="text-danger me-2" />{" "}
+                      <span>Subscribe</span>
+                    </Dropdown.Item>
                   )}
                   <Dropdown.Divider className="bg-secondary" />
                   <Dropdown.Item href="#" onClick={handleLogout}>

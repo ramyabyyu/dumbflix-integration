@@ -1,6 +1,5 @@
 import React from "react";
 import { Dropdown, Form, Table, Card } from "react-bootstrap";
-import { BsFillCaretDownFill } from "react-icons/bs";
 
 function Transactions() {
   return (
