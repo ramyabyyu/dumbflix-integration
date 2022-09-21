@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "../config/api";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../assets/css/Auth.modules.css";
@@ -8,6 +7,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { reset, register, login } from "../features/auth/authSlice";
+import * as Path from "../routeNames";
 
 const initialUserState = {
   email: "",
@@ -46,12 +46,12 @@ const AuthModal = ({ show, handleClose }) => {
   };
 
   useEffect(() => {
-    dispatch(reset());
-
-    if (isSuccess || user) {
+    if (isSuccess) {
       handleClose();
+      navigate(Path.PROFILE);
     }
-  }, [user, message, isSuccess, user, navigate, dispatch]);
+    dispatch(reset());
+  }, [user, message, isSuccess, isError, user, navigate, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+} from "react-bootstrap";
 import noPeople from "../assets/images/no-people.png";
 import "../assets/css/Profile.modules.css";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +20,11 @@ import {
   FaPhone,
   FaRegMoneyBillAlt,
   FaUserCircle,
+  FaDollarSign,
 } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import Transactions from "../components/Transactions";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -39,13 +50,19 @@ const Profile = () => {
           <Card className="rounded shadow border-0 bg-dark text-white p-5">
             <div className="d-flex justify-content-between">
               <div className="me-5">
-                <h3>Personal Info</h3>
                 <div className="mt-3">
                   {/* Full Name */}
                   <div className="d-flex mb-3 align-items-start">
-                    <FaUserCircle className="text-danger me-3 fs-1" />
+                    {user?.is_admin ? (
+                      <RiAdminFill className="text-danger me-3 fs-1" />
+                    ) : (
+                      <FaUserCircle className="text-danger me-3 fs-1" />
+                    )}
                     <div>
-                      <h5>{user?.full_name}</h5>
+                      <h5>
+                        {user?.full_name}{" "}
+                        {user?.is_admin && <Badge bg="danger">Admin</Badge>}
+                      </h5>
                       <p className="text-muted">Full Name</p>
                     </div>
                   </div>
@@ -59,11 +76,29 @@ const Profile = () => {
                   </div>
                   {/* Status */}
                   <div className="d-flex mb-3 align-items-start">
-                    <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
-                    <div>
-                      <h5>{user?.is_active ? "Active" : "Inactive"}</h5>
-                      <p className="text-muted">Status</p>
-                    </div>
+                    {user?.is_admin ? (
+                      <>
+                        <FaDollarSign className="text-danger me-3 fs-1" />
+                        <div>
+                          <h5>100</h5>
+                          <p className="text-muted">Transaction(s)</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
+                        <div>
+                          <h5
+                            className={
+                              user?.status ? "text-success" : "text-danger"
+                            }
+                          >
+                            {user?.status ? "active" : "Inactive"}
+                          </h5>
+                          <p className="text-muted">Status</p>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {/* Gender */}
@@ -138,6 +173,9 @@ const Profile = () => {
             </div>
           </Card>
         </Col>
+      </Row>
+      <Row className="justify-content-center mt-5">
+        <Col md={12}>{user?.is_admin && <Transactions />}</Col>
       </Row>
     </Container>
   );

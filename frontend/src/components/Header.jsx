@@ -13,8 +13,10 @@ import {
   FaFilm,
   FaDollarSign,
 } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
+import * as Path from "../routeNames";
 
 const Header = () => {
   // Modal
@@ -69,23 +71,15 @@ const Header = () => {
                   />
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="dark">
-                  <Dropdown.Item href="/profile">
+                  <Dropdown.Item as={Link} to={Path.PROFILE}>
                     <FaUserAlt className="text-danger me-2" />{" "}
                     <span>Profile</span>
                   </Dropdown.Item>
-                  <Dropdown.Item to="/payment" as={Link}>
-                    <FaMoneyBillAlt className="text-danger me-2" />{" "}
-                    <span>Pay</span>
-                  </Dropdown.Item>
                   {user?.is_admin && (
                     <>
-                      <Dropdown.Item href="#">
-                        <FaFilm className="text-danger me-2" />{" "}
-                        <span>Add Film</span>
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        <FaDollarSign className="text-danger me-2" />{" "}
-                        <span>Transaction</span>
+                      <Dropdown.Item as={Link} to={Path.ADMIN_DASHBOARD}>
+                        <RiAdminFill className="text-danger me-2" />{" "}
+                        <span>Dashboard</span>
                       </Dropdown.Item>
                     </>
                   )}
