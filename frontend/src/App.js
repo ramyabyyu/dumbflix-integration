@@ -18,6 +18,7 @@ const App = () => {
         <Route path={Path.PROFILE} element={<Profile />} />
         <Route path={Path.ADD_FILM} element={<AddFilm />} />
         <Route path={Path.ALL_MOVIES} element={<AllMovies />} />
+        <Route path={Path.MOVIE_DETAIL + ":slug"} elememt={<Profile />} />
       </Routes>
       <ToastContainer />
     </>

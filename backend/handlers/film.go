@@ -37,7 +37,7 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 			ID: film.ID,
 			Title: film.Title,
 			Slug: film.Slug,
-			ThumbnailFilm: film.ThumbnailFilm,
+			ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
 			Description: film.Description,
 			Year: film.Year,
 			Category: film.Category,
