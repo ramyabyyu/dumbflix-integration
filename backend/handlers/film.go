@@ -4,8 +4,10 @@ import (
 	filmdto "dumbflix/dto/film"
 	dto "dumbflix/dto/result"
 	"dumbflix/models"
+	"dumbflix/pkg/slug"
 	"dumbflix/repositories"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -34,6 +36,7 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 		filmResponse = append(filmResponse, filmdto.FilmResponse{
 			ID: film.ID,
 			Title: film.Title,
+			Slug: film.Slug,
 			ThumbnailFilm: film.ThumbnailFilm,
 			Description: film.Description,
 			Year: film.Year,
@@ -83,9 +86,13 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
+	title := request.Title
+
 	film := models.Film{
-		Title: request.Title,
+		Title: title,
 		ThumbnailFilm: filename,
+		Slug: slug.GenerateSlug(title),
 		Description: request.Description,
 		Year: request.Year,
 		Category: request.Category,
@@ -102,12 +109,15 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	filmResponse := filmdto.FilmResponse{
 		ID: film.ID,
 		Title: film.Title,
+		Slug: film.Slug,
 		ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
 		Description: film.Description,
 		Year: film.Year,
 		Category: film.Category,
 		UserId: userId,
 	}
+
+	fmt.Println("Film", filmResponse)
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: filmResponse}

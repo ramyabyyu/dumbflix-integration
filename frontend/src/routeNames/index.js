@@ -4,7 +4,7 @@ export const ALL_MOVIES = "/movies";
 
 // Private Access Routes
 export const PROFILE = "/profile";
-export const MOVIE_DETAIL = "/movie/detail";
+export const MOVIE_DETAIL = "/movie/detail/:id";
 export const SUBSCRIBE = "/subcribe";
 
 // Private Access and Admin Only Routes

@@ -3,6 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Header from "./components/Header";
 import AddFilm from "./pages/Admin/AddFilm";
+import AllMovies from "./pages/AllMovies";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 
@@ -15,9 +16,8 @@ const App = () => {
       <Routes>
         <Route path={Path.HOME} element={<Home />} />
         <Route path={Path.PROFILE} element={<Profile />} />
-
-        {/* Admin Pages */}
         <Route path={Path.ADD_FILM} element={<AddFilm />} />
+        <Route path={Path.ALL_MOVIES} element={<AllMovies />} />
       </Routes>
       <ToastContainer />
     </>

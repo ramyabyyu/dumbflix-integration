@@ -26,8 +26,7 @@ export const createFilm = createAsyncThunk(
 // Get Films
 export const getFilms = createAsyncThunk("film/getAll", async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token;
-    return await filmService.getFilms(token);
+    return await filmService.getFilms();
   } catch (error) {
     serviceErrorMessage(error, thunkAPI);
   }
@@ -41,6 +40,7 @@ export const filmSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Create Film
       .addCase(createFilm.pending, (state) => {
         state.isLoading = true;
       })
@@ -50,6 +50,20 @@ export const filmSlice = createSlice({
         state.films.push(action.payload);
       })
       .addCase(createFilm.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // Get Film
+      .addCase(getFilms.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getFilms.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.films = action.payload;
+      })
+      .addCase(getFilms.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

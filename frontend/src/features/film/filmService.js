@@ -1,5 +1,8 @@
 import { API } from "../../config/api";
-import { formDataHeaderConfig } from "../../config/configHeader";
+import {
+  formDataHeaderConfig,
+  jsonHeaderConfig,
+} from "../../config/configHeader";
 
 const createFilm = async (filmData, token) => {
   const response = await API.post(
@@ -10,8 +13,9 @@ const createFilm = async (filmData, token) => {
   return response.data.data;
 };
 
-const getFilms = async (token) => {
-  const response = await API.get("/films", formDataHeaderConfig(token));
+const getFilms = async () => {
+  const response = await API.get("/films", jsonHeaderConfig(null));
+  console.log(response);
   return response.data.data;
 };
 

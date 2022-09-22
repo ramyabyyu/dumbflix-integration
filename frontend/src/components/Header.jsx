@@ -51,7 +51,7 @@ const Header = () => {
             <Nav.Link as={Link} className="fw-bold" to="/">
               Home
             </Nav.Link>
-            <Nav.Link className="fw-bold" to="all-movies" as={Link}>
+            <Nav.Link className="fw-bold" to={Path.ALL_MOVIES} as={Link}>
               Show All Movies
             </Nav.Link>
           </Nav>
