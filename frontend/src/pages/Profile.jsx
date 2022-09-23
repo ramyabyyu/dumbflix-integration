@@ -14,17 +14,16 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
   FaEnvelope,
-  FaFemale,
-  FaMale,
   FaMapMarked,
   FaPhone,
   FaRegMoneyBillAlt,
   FaUserCircle,
   FaDollarSign,
+  FaMale,
+  FaFemale,
 } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
-import Transactions from "../components/Transactions";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -173,9 +172,6 @@ const Profile = () => {
             </div>
           </Card>
         </Col>
-      </Row>
-      <Row className="justify-content-center my-5">
-        <Col md={12}>{user?.is_admin && <Transactions />}</Col>
       </Row>
     </Container>
   );

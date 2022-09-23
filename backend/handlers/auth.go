@@ -63,10 +63,13 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var isAdmin bool
+	var isActive bool
 	if len(users) == 0 {
 		isAdmin = true
+		isActive = true
 	} else {
 		isAdmin = false
+		isActive = false
 	}
 
 	user := models.User {
@@ -79,7 +82,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 			Address: request.Address,
 			Phone: request.Phone,
 			Photo: "-",
-			IsActive: false,
+			IsActive: isActive,
 		},
 	}
 

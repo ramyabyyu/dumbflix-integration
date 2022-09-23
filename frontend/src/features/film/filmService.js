@@ -15,7 +15,6 @@ const createFilm = async (filmData, token) => {
 
 const getFilms = async () => {
   const response = await API.get("/films", jsonHeaderConfig(null));
-  console.log(response);
   return response.data.data;
 };
 

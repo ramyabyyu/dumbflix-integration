@@ -7,7 +7,6 @@ import (
 	"dumbflix/pkg/slug"
 	"dumbflix/repositories"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -30,6 +29,8 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(err.Error())
 	}
+
+	// fmt.Println(films)
 
 	filmResponse := make([]filmdto.FilmResponse, 0)
 	for _, film := range films {
@@ -117,7 +118,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		UserId: userId,
 	}
 
-	fmt.Println("Film", filmResponse)
+	// fmt.Println("Film", filmResponse)
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: filmResponse}

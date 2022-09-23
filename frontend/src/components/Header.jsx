@@ -1,20 +1,27 @@
 import React from "react";
 import { useState } from "react";
-import { Navbar, Container, Nav, Button, Dropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  Button,
+  Dropdown,
+  Badge,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import AuthModal from "./AuthModal";
 import dumbflixLogo from "../assets/images/dumbflix_logo.png";
 import { useEffect } from "react";
 import noPeople from "../assets/images/no-people.png";
 import {
-  FaUserAlt,
   FaMoneyBillAlt,
   FaSignOutAlt,
   FaFilm,
-  FaDollarSign,
-  FaSubscript,
+  FaMoneyBillWave,
+  FaUserCircle,
 } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
+import { GrMoney } from "react-icons/gr";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import * as Path from "../routeNames";
@@ -73,14 +80,27 @@ const Header = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="dark">
                   <Dropdown.Item as={Link} to={Path.PROFILE}>
-                    <FaUserAlt className="text-danger me-2" />{" "}
-                    <span>Profile</span>
+                    {user?.is_admin ? (
+                      <RiAdminFill className="text-danger me-2" />
+                    ) : (
+                      <FaUserCircle className="text-danger me-2" />
+                    )}
+                    <span>
+                      Profile{" "}
+                      {user?.is_admin && <Badge bg="danger">Admin</Badge>}
+                    </span>
                   </Dropdown.Item>
                   {user?.is_admin ? (
-                    <Dropdown.Item as={Link} to={Path.ADD_FILM}>
-                      <FaFilm className="text-danger me-2" />{" "}
-                      <span>Add Film</span>
-                    </Dropdown.Item>
+                    <>
+                      <Dropdown.Item as={Link} to={Path.ADD_FILM}>
+                        <FaFilm className="text-danger me-2" />{" "}
+                        <span>Add Film</span>
+                      </Dropdown.Item>
+                      <Dropdown.Item as={Link} to={Path.TRANSACTIONS}>
+                        <FaMoneyBillWave className="text-danger me-2" />{" "}
+                        <span>Transactions</span>
+                      </Dropdown.Item>
+                    </>
                   ) : (
                     <Dropdown.Item as={Link} to={Path.SUBSCRIBE}>
                       <FaMoneyBillAlt className="text-danger me-2" />{" "}

@@ -15,6 +15,7 @@ type Transaction struct {
 type UserTransaction struct {
 	StartDate time.Time `json:"startdate"`
 	DueDate   time.Time `json:"duedate"`
+	Duration   time.Duration `json:"duration"`
 	Attache   string    `json:"attache"`
 	Status    string      `json:"status"`
 }
