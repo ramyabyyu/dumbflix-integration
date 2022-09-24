@@ -18,9 +18,15 @@ const getFilms = async () => {
   return response.data.data;
 };
 
+const getFilmDetail = async (slug, token) => {
+  const response = await API.get(`/film/${slug}`, jsonHeaderConfig(token));
+  return response.data.data;
+};
+
 const filmService = {
   createFilm,
   getFilms,
+  getFilmDetail,
 };
 
 export default filmService;

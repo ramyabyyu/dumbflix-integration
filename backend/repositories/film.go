@@ -8,7 +8,7 @@ import (
 
 type FilmRepository interface {
 	FindFilm() ([]models.Film, error)
-	GetFilm(ID int) (models.Film, error)
+	GetFilm(slug string) (models.Film, error)
 	CreateFilm(film models.Film) (models.Film, error)
 	UpdateFilm(film models.Film) (models.Film, error)
 	DeleteFilm(film models.Film) (models.Film, error)
@@ -29,9 +29,9 @@ func (r *repositoryFilm) FindFilm() ([]models.Film, error) {
 	return films, err
 }
 
-func (r *repositoryFilm) GetFilm(ID int) (models.Film, error) {
+func (r *repositoryFilm) GetFilm(slug string) (models.Film, error) {
 	var film models.Film
-	err := r.db.First(&film, ID).Error
+	err := r.db.First(&film, "slug=?", slug).Error
 
 	return film, err
 }

@@ -7,6 +7,5 @@ func RoutesInit(r *mux.Router) {
 	AuthRoutes(r)
 	ProfileRoutes(r)
 	FilmRoutes(r)
-	EpisodeRoutes(r)
 	TransactionRoutes(r)
 }

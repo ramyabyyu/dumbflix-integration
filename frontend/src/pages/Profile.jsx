@@ -75,29 +75,17 @@ const Profile = () => {
                   </div>
                   {/* Status */}
                   <div className="d-flex mb-3 align-items-start">
-                    {user?.is_admin ? (
-                      <>
-                        <FaDollarSign className="text-danger me-3 fs-1" />
-                        <div>
-                          <h5>100</h5>
-                          <p className="text-muted">Transaction(s)</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
-                        <div>
-                          <h5
-                            className={
-                              user?.status ? "text-success" : "text-danger"
-                            }
-                          >
-                            {user?.status ? "active" : "Inactive"}
-                          </h5>
-                          <p className="text-muted">Status</p>
-                        </div>
-                      </>
-                    )}
+                    <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
+                    <div>
+                      <h5
+                        className={
+                          user?.is_active ? "text-success" : "text-danger"
+                        }
+                      >
+                        {user?.is_active ? "Active" : "Inactive"}
+                      </h5>
+                      <p className="text-muted">Status</p>
+                    </div>
                   </div>
 
                   {/* Gender */}

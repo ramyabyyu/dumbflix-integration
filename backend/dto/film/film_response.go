@@ -9,4 +9,5 @@ type FilmResponse struct {
 	Year          string `json:"year"`
 	Category      string `json:"category"`
 	UserId        int    `json:"user_id"`
+	LinkFilm      string `json:"link_film"`
 }

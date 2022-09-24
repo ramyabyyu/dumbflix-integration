@@ -23,6 +23,19 @@ export const createFilm = createAsyncThunk(
   }
 );
 
+// Get Film Detail
+export const getFilmDetail = createAsyncThunk(
+  "film/detail",
+  async (slug, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await filmService.getFilmDetail(slug, token);
+    } catch (error) {
+      serviceErrorMessage(error, thunkAPI);
+    }
+  }
+);
+
 // Get Films
 export const getFilms = createAsyncThunk("film/getAll", async (_, thunkAPI) => {
   try {
@@ -64,6 +77,20 @@ export const filmSlice = createSlice({
         state.films = action.payload;
       })
       .addCase(getFilms.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // Get film detail
+      .addCase(getFilmDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getFilmDetail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.films = action.payload;
+      })
+      .addCase(getFilmDetail.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

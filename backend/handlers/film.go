@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/gorilla/mux"
 )
 
 type handlerFilm struct {
@@ -43,6 +44,7 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 			Year: film.Year,
 			Category: film.Category,
 			UserId: film.UserID,
+			LinkFilm: film.LinkFilm,
 		})
 	}
 
@@ -68,6 +70,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		Description: r.FormValue("description"),
 		Year: r.FormValue("year"),
 		Category: r.FormValue("category"),
+		LinkFilm: r.FormValue("link_film"),
 	}
 
 	// request := new(filmdto.FilmRequest)
@@ -98,6 +101,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		Year: request.Year,
 		Category: request.Category,
 		UserID: userId,
+		LinkFilm: request.LinkFilm,
 	}
 
 	film, err = h.FilmRepository.CreateFilm(film)
@@ -116,9 +120,40 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		Year: film.Year,
 		Category: film.Category,
 		UserId: userId,
+		LinkFilm: film.LinkFilm,
 	}
 
 	// fmt.Println("Film", filmResponse)
+
+	w.WriteHeader(http.StatusOK)
+	response := dto.SuccessResult{Code: http.StatusOK, Data: filmResponse}
+	json.NewEncoder(w).Encode(response)
+}
+
+func (h *handlerFilm) GetFilm(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	slug := mux.Vars(r)["slug"]
+
+	film, err := h.FilmRepository.GetFilm(slug)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	filmResponse := filmdto.FilmResponse{
+		ID: film.ID,
+		Title: film.Title,
+		Slug: film.Slug,
+		ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
+		Description: film.Description,
+		Year: film.Year,
+		Category: film.Category,
+		UserId: film.User.ID,
+		LinkFilm: film.LinkFilm,
+	}
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: filmResponse}

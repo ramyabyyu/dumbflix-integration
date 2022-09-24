@@ -11,7 +11,6 @@ func RunMigration() {
 		&models.User{},
 		&models.Profile{},
 		&models.Film{},
-		&models.Episode{},
 		&models.Transaction{},
 	)
 

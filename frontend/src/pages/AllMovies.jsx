@@ -1,5 +1,13 @@
 import React from "react";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Alert,
+  Button,
+} from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -16,7 +24,7 @@ const AllMovies = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log("films = ", films);
+  // console.log("films = ", films);
 
   useEffect(() => {
     if (isError) {
@@ -36,6 +44,13 @@ const AllMovies = () => {
 
   return (
     <Container className="mt-5">
+      <Row className="justify-content-end mb-5 align-items-center">
+        <Col md={2}>
+          <Button as={Link} to={Path.ADD_FILM} variant="danger">
+            Add Film
+          </Button>
+        </Col>
+      </Row>
       <Row className="justify-content-center mb-3">
         {films.length < 1 ? (
           <Col md={12}>

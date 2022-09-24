@@ -36,6 +36,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	// Validate Request
@@ -44,6 +45,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	// Hashing Password
@@ -52,6 +54,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	// GetAllUsers, if record user is still empty, then user role is admin, else user role is not admin
@@ -60,6 +63,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	var isAdmin bool
@@ -102,12 +106,14 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	// Generate Token
 	claims := jwt.MapClaims{}
 	claims["id"] = data.ID
 	claims["isAdmin"] = data.IsAdmin
+	claims["isActive"] = data.Profile.IsActive
 	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
 
 	fmt.Println(claims)
@@ -186,6 +192,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	claims := jwt.MapClaims{}
 	claims["id"] = data.ID
 	claims["isAdmin"] = data.IsAdmin
+	claims["isActive"] = data.Profile.IsActive
 	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
 
 	token, errGenerateToken := jwtToken.GenerateToken(&claims)
