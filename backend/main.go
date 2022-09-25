@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -19,6 +20,8 @@ func main() {
 	if errEnv != nil {
 		panic("Failed to load env file")
 	}
+
+	
 
 	// Database Init
 	mysql.DatabaseInit()
@@ -46,7 +49,8 @@ func main() {
 	var allowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PATCH", "DELETE", "PUT", "HEAD"})
 	var allowedOrigins = handlers.AllowedOrigins([]string{"*"})
 
-	var port = "8080"
+	// port
+	var port = os.Getenv("PORT");
 
 	fmt.Println("Starting API server localhost:"+port)
 	http.ListenAndServe("localhost:8080", handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(r))
