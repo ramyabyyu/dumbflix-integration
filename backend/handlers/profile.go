@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
@@ -30,8 +31,8 @@ func (h *handlerProfile) GetProfile(w http.ResponseWriter, r *http.Request) {
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
 	userId := int(userInfo["id"].(float64))
 
-	fmt.Println(userInfo)
-	fmt.Println(userId)
+	// fmt.Println(userInfo)
+	// fmt.Println(userId)
 
 	var profile models.Profile
 	profile, err := h.ProfileRepository.GetProfile(userId)
@@ -98,10 +99,12 @@ func (h *handlerProfile) ChangeProfilePhoto(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	filePath := os.Getenv("PATH_FILE")
+
 	fmt.Println(profile)
 	changeProfilePhotoResponse := profiledto.ChangeProfilePhotoResponse{
 		ID: profile.ID,
-		Photo: profile.Photo,
+		Photo: filePath + profile.Photo,
 	}
 
 	w.WriteHeader(http.StatusOK)

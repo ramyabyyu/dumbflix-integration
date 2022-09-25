@@ -1,7 +1,10 @@
 package transactiondto
 
+import "dumbflix/models"
+
 type TransactionRequest struct {
-	Attache string `json:"attache"`
+	UserID int `json:"user_id" form:"user_id"`
+	User   models.UserTransaction `json:"user"`
 }
 
 type UpdateStatusTransactionRequest struct {

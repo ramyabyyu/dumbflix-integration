@@ -130,11 +130,6 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 	registerResponse := authdto.AuthResponse{
 		ID: data.ID,
 		Email: data.Email,
-		FullName: data.Profile.FullName,
-		Gender: data.Profile.Gender,
-		Address: data.Profile.Address,
-		Phone: data.Profile.Phone,
-		IsActive: data.Profile.IsActive,
 		IsAdmin: data.IsAdmin,
 		Token: token,
 		Photo: data.Profile.Photo,
@@ -205,18 +200,11 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	loginResponse := authdto.AuthResponse{
 		ID: data.ID,
 		Email: data.Email,
-		FullName: data.Profile.FullName,
-		Gender: data.Profile.Gender,
-		Address: data.Profile.Address,
-		Phone: data.Profile.Phone,
-		IsActive: data.Profile.IsActive,
 		IsAdmin: data.IsAdmin,
 		Token: token,
 		Photo: data.Profile.Photo,
 		Message: "Login Success",
 	}
-
-	fmt.Println(data.Profile.FullName)
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: loginResponse}

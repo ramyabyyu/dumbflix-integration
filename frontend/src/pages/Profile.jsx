@@ -18,17 +18,23 @@ import {
   FaPhone,
   FaRegMoneyBillAlt,
   FaUserCircle,
-  FaDollarSign,
   FaMale,
   FaFemale,
 } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as Path from "../routeNames";
+import { getProfile, reset } from "../features/profile/profileSlice";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+  const { profile, isSuccess, isLoading, isError, messgae } = useSelector(
+    (state) => state.profile
+  );
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // const hiddenFileInput = () => {};
   // const handleFileInput = () => {};
@@ -39,8 +45,18 @@ const Profile = () => {
   // };
 
   useEffect(() => {
-    if (!user) navigate("/");
-  }, [user, navigate]);
+    if (user) {
+      dispatch(getProfile());
+    } else navigate(Path.HOME);
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [user, navigate, dispatch, reset]);
+
+  if (isLoading) {
+    return <LoadingSpinner size="big" />;
+  }
 
   return (
     <Container>
@@ -59,7 +75,7 @@ const Profile = () => {
                     )}
                     <div>
                       <h5>
-                        {user?.full_name}{" "}
+                        {profile?.full_name}{" "}
                         {user?.is_admin && <Badge bg="danger">Admin</Badge>}
                       </h5>
                       <p className="text-muted">Full Name</p>
@@ -79,10 +95,10 @@ const Profile = () => {
                     <div>
                       <h5
                         className={
-                          user?.is_active ? "text-success" : "text-danger"
+                          profile?.is_active ? "text-success" : "text-danger"
                         }
                       >
-                        {user?.is_active ? "Active" : "Inactive"}
+                        {profile?.is_active ? "Active" : "Inactive"}
                       </h5>
                       <p className="text-muted">Status</p>
                     </div>
@@ -90,13 +106,13 @@ const Profile = () => {
 
                   {/* Gender */}
                   <div className="d-flex mb-3 align-items-start">
-                    {user?.gender === "Male" ? (
+                    {profile?.gender === "Male" ? (
                       <FaMale className="text-danger me-3 fs-1" />
                     ) : (
                       <FaFemale className="text-danger me-3 fs-1" />
                     )}
                     <div>
-                      <h5>{user?.gender}</h5>
+                      <h5>{profile?.gender}</h5>
                       <p className="text-muted">Gender</p>
                     </div>
                   </div>
@@ -105,7 +121,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaPhone className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.phone}</h5>
+                      <h5>{profile?.phone}</h5>
                       <p className="text-muted">Phone Number</p>
                     </div>
                   </div>
@@ -114,7 +130,7 @@ const Profile = () => {
                   <div className="d-flex mb-3 align-items-start">
                     <FaMapMarked className="text-danger me-3 fs-1" />
                     <div>
-                      <h5>{user?.address}</h5>
+                      <h5>{profile?.address}</h5>
                       <p className="text-muted">Address</p>
                     </div>
                   </div>
@@ -122,7 +138,7 @@ const Profile = () => {
               </div>
               <div className="w-50">
                 <img
-                  src={user?.photo !== "-" ? user?.photo : noPeople}
+                  src={profile?.photo !== "-" ? profile?.photo : noPeople}
                   alt="nophoto"
                   className="profile__img rounded"
                   id="profile-photo"

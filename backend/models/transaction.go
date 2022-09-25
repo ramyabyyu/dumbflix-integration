@@ -8,16 +8,13 @@ type Transaction struct {
 	DueDate   time.Time `json:"duedate"`
 	Attache   string    `json:"attache"`
 	Status    string     `json:"status"`
+	Price int `json:"price"`
 	UserID    int       `json:"user_id" gorm:"type:int"`
-	User      User      `json:"-"`
+	User      User      `json:"user"`
 }
 
 type UserTransaction struct {
-	StartDate time.Time `json:"startdate"`
-	DueDate   time.Time `json:"duedate"`
-	Duration   time.Duration `json:"duration"`
-	Attache   string    `json:"attache"`
-	Status    string      `json:"status"`
+	Email string `json:"email" form:"email"`
 }
 
 func (UserTransaction) TableName() string {

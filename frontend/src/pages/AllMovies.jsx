@@ -12,11 +12,16 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getFilms, reset } from "../features/film/filmSlice";
+import {
+  getProfile,
+  reset as profileReset,
+} from "../features/profile/profileSlice";
 import * as Path from "../routeNames";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const AllMovies = () => {
   const { user } = useSelector((state) => state.auth);
+  const { profile } = useSelector((state) => state.profile);
   const { films, isLoading, isError, message } = useSelector(
     (state) => state.film
   );
@@ -32,9 +37,11 @@ const AllMovies = () => {
     }
 
     dispatch(getFilms());
+    dispatch(getProfile());
 
     return () => {
       dispatch(reset());
+      dispatch(profileReset());
     };
   }, [isError, navigate, dispatch, message]);
 
@@ -64,7 +71,7 @@ const AllMovies = () => {
               <Col md={2} key={film.id} className="mb-5 me-2">
                 <Link
                   to={
-                    user && user?.is_active
+                    user && profile?.is_active
                       ? `${Path.MOVIE_DETAIL}/${film.slug}`
                       : Path.SUBSCRIBE
                   }

@@ -4,14 +4,19 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFilmDetail, reset } from "../features/film/filmSlice";
+import {
+  getProfile,
+  reset as profileReset,
+} from "../features/profile/profileSlice";
 import LoadingSpinner from "../components/LoadingSpinner";
 import "../assets/css/Detail.modules.css";
-import detailImg from "../assets/images/detail.jpg";
+import * as Path from "../routeNames";
 
 const MovieDetail = () => {
   const { slug } = useParams();
 
   const { user } = useSelector((state) => state.auth);
+  const { profile } = useSelector((state) => state.profile);
   const { films, isLoading, isError, message } = useSelector(
     (state) => state.film
   );
@@ -20,8 +25,8 @@ const MovieDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user || !user.is_admin || !user.is_active) {
-      navigate("/");
+    if (!user && !profile.is_active) {
+      navigate(Path.HOME);
     }
   }, [user, navigate]);
 
@@ -29,9 +34,11 @@ const MovieDetail = () => {
     if (isError) console.log(message);
 
     dispatch(getFilmDetail(slug));
+    dispatch(getProfile());
 
     return () => {
       dispatch(reset());
+      dispatch(profileReset());
     };
   }, [isError, message, dispatch, navigate]);
 

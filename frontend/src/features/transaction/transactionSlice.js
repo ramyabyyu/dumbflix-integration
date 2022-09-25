@@ -17,7 +17,20 @@ export const getTransactions = createAsyncThunk(
       const token = thunkAPI.getState().auth.user.token;
       return await transactionService.getTransactions(token);
     } catch (error) {
-      serviceErrorMessage(error);
+      serviceErrorMessage(error, thunkAPI);
+    }
+  }
+);
+
+export const createTransaction = createAsyncThunk(
+  "transaction/create",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      console.log(" from transactionSlice=", token);
+      return await transactionService.createTransaction(token);
+    } catch (error) {
+      serviceErrorMessage(error, thunkAPI);
     }
   }
 );
@@ -40,6 +53,20 @@ export const transactionSlice = createSlice({
         state.transactions = action.payload;
       })
       .addCase(getTransactions.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // create transaction
+      .addCase(createTransaction.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createTransaction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.transactions.push(action.payload);
+      })
+      .addCase(createTransaction.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -8,6 +8,7 @@ import (
 	"dumbflix/repositories"
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
@@ -33,13 +34,15 @@ func (h *handlerFilm) FindFilm(w http.ResponseWriter, r *http.Request) {
 
 	// fmt.Println(films)
 
+	filePath := os.Getenv("PATH_FILE")
+
 	filmResponse := make([]filmdto.FilmResponse, 0)
 	for _, film := range films {
 		filmResponse = append(filmResponse, filmdto.FilmResponse{
 			ID: film.ID,
 			Title: film.Title,
 			Slug: film.Slug,
-			ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
+			ThumbnailFilm: filePath + film.ThumbnailFilm,
 			Description: film.Description,
 			Year: film.Year,
 			Category: film.Category,
@@ -111,11 +114,13 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
+	filePath := os.Getenv("PATH_FILE")
+
 	filmResponse := filmdto.FilmResponse{
 		ID: film.ID,
 		Title: film.Title,
 		Slug: film.Slug,
-		ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
+		ThumbnailFilm: filePath + film.ThumbnailFilm,
 		Description: film.Description,
 		Year: film.Year,
 		Category: film.Category,
@@ -143,11 +148,13 @@ func (h *handlerFilm) GetFilm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	filePath := os.Getenv("PATH_FILE")
+
 	filmResponse := filmdto.FilmResponse{
 		ID: film.ID,
 		Title: film.Title,
 		Slug: film.Slug,
-		ThumbnailFilm: "http://localhost:8080/uploads/" + film.ThumbnailFilm,
+		ThumbnailFilm: filePath + film.ThumbnailFilm,
 		Description: film.Description,
 		Year: film.Year,
 		Category: film.Category,

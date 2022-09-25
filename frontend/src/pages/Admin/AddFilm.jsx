@@ -20,6 +20,7 @@ const AddFilm = () => {
     category: "",
     year: "",
     description: "",
+    link_film: "",
   });
 
   // Image Upload
@@ -57,7 +58,8 @@ const AddFilm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { title, thumbnail_film, category, description, year } = filmData;
+    const { title, thumbnail_film, category, description, year, link_film } =
+      filmData;
 
     const formData = new FormData();
     formData.set("title", title);
@@ -65,6 +67,7 @@ const AddFilm = () => {
     formData.set("category", category);
     formData.set("description", description);
     formData.set("year", year);
+    formData.set("link_film", link_film);
 
     dispatch(createFilm(formData));
   };
@@ -165,6 +168,15 @@ const AddFilm = () => {
                   placeholder="Description"
                   className="bg-group"
                   style={{ resize: "none" }}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3">
+                <Form.Control
+                  name="link_film"
+                  id="link_film"
+                  placeholder="Link Film"
+                  className="bg-group"
                   onChange={handleChange}
                 />
               </div>
